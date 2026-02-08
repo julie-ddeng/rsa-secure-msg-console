@@ -63,44 +63,50 @@ public class KeyGen {
                 continue;
             // Check if relatively prime
             if (gcd(this.eulers, k) == 1){
-                break;
+                //Ensures k is not its own inverse (so public key != private key)
+                if (inverse(k, this.eulers) != k){
+                    break;
+                }
             }
+
+
         }
         return k;
     }
 
-    private int inverse(int n, int k){
+    private int inverse(int k, int mod){
         /** This function finds and returns the multiplicative inverse of an integer k, modulus n, using the extended
          * Euclidean algorithm.
          */
-        int r = n % k;
-        int q = (n - r) / k;
-        int t1 = 0;
-        int t2 = 1;
-        int t3 = t1 - q * t2;
-        while(r != 0) {
-            n = k;
-            k = r;
-            r = n % k;
-            q = (n - r) / k;
-            t1 = t2;
-            t2 = t3;
-            t3 = t1 - q * t2;
+        int prevRemain = mod;
+        int currRemain = k;
+
+        int prevCoeff = 0;
+        int currCoeff = 1;
+
+        while (currRemain != 0) {
+            int quotient = prevRemain / currRemain;
+
+            int tempRemain = currRemain;
+            currRemain = prevRemain - quotient * currRemain;
+            prevRemain = tempRemain;
+
+            int tempCoeff = currCoeff;
+            currCoeff = prevCoeff - quotient * currCoeff;
+            prevCoeff = tempCoeff;
         }
-        return t2;
+        int inverse = prevCoeff;
+        if (inverse < 0) {
+            inverse += mod;
+        }
+        return inverse;
     }
 
     private int generatePrivate(){
         /** This function generates a private key s such that it is the inverse of the public key k, where the modulus
          * is Euler's Totient.
          */
-        int s;
-        s = inverse(this.eulers, this.publicKey);
-
-        // Ensures s is in the range [0, modulus]
-        if (s < 0)
-            s = s + this.eulers;
-        return s;
+        return inverse(this.publicKey, this.eulers);
     }
 
 
