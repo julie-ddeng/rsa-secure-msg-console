@@ -9,7 +9,6 @@ public class KeyGen {
     private int privateKey;
     private int eulers;
 
-
     // Constructor
     public KeyGen(int prime1, int prime2){
         this.p = prime1;
@@ -33,7 +32,6 @@ public class KeyGen {
         return this.modulus;
     }
 
-
     // Public/private key generator functions
     private int gcd(int a, int b){
         /** This function calculates and returns the greatest common divisor (GCD) of two integers a and b using
@@ -52,7 +50,6 @@ public class KeyGen {
         /** This function generates a public key k, such that the gcd( k, (p-1)*(q-1) ) = 1, where (p-1)*(q-1) is
          * Euler's Totient.
          */
-
         Random randomGen = new Random();
         int k;
         // loop will keep generating until it finds public key k relatively prime with eulers.
@@ -68,14 +65,12 @@ public class KeyGen {
                     break;
                 }
             }
-
-
         }
         return k;
     }
 
     private int inverse(int k, int mod){
-        /** This function finds and returns the multiplicative inverse of an integer k, modulus n, using the extended
+        /** This function finds and returns the multiplicative inverse of an integer k, modulus mod, using the extended
          * Euclidean algorithm.
          */
         int prevRemain = mod;
@@ -96,6 +91,7 @@ public class KeyGen {
             prevCoeff = tempCoeff;
         }
         int inverse = prevCoeff;
+        // Ensures inverse is positive
         if (inverse < 0) {
             inverse += mod;
         }
@@ -107,14 +103,5 @@ public class KeyGen {
          * is Euler's Totient.
          */
         return inverse(this.publicKey, this.eulers);
-    }
-
-
-
-    public static void main(String[] args){
-        KeyGen newKey = new KeyGen(13, 11);
-        System.out.println(newKey.publicKey);
-        System.out.println(newKey.privateKey);
-
     }
 }
