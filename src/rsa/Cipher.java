@@ -88,9 +88,12 @@ public class Cipher {
         char letter = (char) (decryptedNum -1 + 'A');
         return letter;
     }
+
+    // other helper method
     private int modPow(int base, int exponent, int modulus){
         /**
          * This method implements repeated squaring trick to compute an exponent, modulo n.
+         * Consistently reduces the base (mod n) to avoid integers that are too large.
          */
         int result = 1;
         base = base % modulus;
