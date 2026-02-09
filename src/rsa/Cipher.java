@@ -9,20 +9,13 @@ public class Cipher {
     private int[] cipherText; //cipherText to decrypt
 
     // Encrypt constructor
-    public Cipher(int publicKey, int privateKey, int modulus, char[] word){
+    public Cipher(int publicKey, int modulus, String word){
         this.publicKey = publicKey;
-        this.privateKey = privateKey;
         this.modulus = modulus;
-        // stores copy of the word array
-        char[] wordCopy = new char[word.length];
-        for (int i = 0; i < word.length; i++){
-            wordCopy[i] = word[i];
-        }
-        this.word = wordCopy;
+        this.word = word.toCharArray();
     }
     // Decrypt constructor
-    public Cipher(int publicKey, int privateKey, int modulus, int[] cipherText){
-        this.publicKey = publicKey;
+    public Cipher(int privateKey, int modulus, int[] cipherText){
         this.privateKey = privateKey;
         this.modulus = modulus;
         // Stores copy of the cipherText array
@@ -69,7 +62,7 @@ public class Cipher {
     }
 
     // Decrypt methods
-    public char[] decryptWord(){
+    public String decryptWord(){
         /**
          * This method decrypts the cipherText (int[]) and returns an array containing the letters of the message.
          */
@@ -77,7 +70,10 @@ public class Cipher {
         for(int i = 0; i < result.length; i++){
             result[i] = decryptLetter(this.cipherText[i]);
         }
-        return result;
+
+        //convert result (char[]) to type String
+        String resultAsString = new String(result);
+        return resultAsString;
     }
 
     private char decryptLetter(int num){

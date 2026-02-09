@@ -1,17 +1,12 @@
 package rsa;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Console {
     private int publicKey;
     private int privateKey;
     private int modulus;
-
-    // string to char array
-    // str.toCharArray();
-
-    // char array to string
-    // String str = new String(charArray);
 
     // helper methods
     private boolean primeInputValidation(int p1, int p2){
@@ -25,7 +20,7 @@ public class Console {
         return false;
     }
 
-    // Console option methods
+    // Console methods
 
     private void welcomeMsg(Scanner sc){
         System.out.println("Welcome to this RSA encrypted messaging console!");
@@ -45,6 +40,8 @@ public class Console {
         System.out.print("What shall we do? (type a number and press enter) ");
     }
 
+    // Console option methods
+
     private void generateKeys(Scanner sc){
         System.out.println("PUBLIC/PRIVATE KEY GENERATION");
         System.out.println("Instructions:");
@@ -53,6 +50,7 @@ public class Console {
         int p1 = sc.nextInt();
         System.out.print("Second prime: ");
         int p2 = sc.nextInt();
+        sc.nextLine();
 
         // asks for user input until primes are valid
         while( ! primeInputValidation(p1, p2)){
@@ -61,6 +59,7 @@ public class Console {
             p1 = sc.nextInt();
             System.out.print("Second prime: ");
             p2 = sc.nextInt();
+            sc.nextLine();
         }
 
         // generate keys and initializing fields
@@ -74,19 +73,54 @@ public class Console {
         System.out.println("Public Key k: " + this.publicKey);
         System.out.println("Private Key s: " + this.privateKey);
         System.out.println("Modulus n: " + this.modulus);
-
-        sc.nextLine();
-        System.out.print("Press enter to go back to the console menu! ");
-        sc.nextLine();
     }
 
     private void encrypt(Scanner sc){
         System.out.println("ENCRYPTION");
+        System.out.println("This console will encrypt single word messages, case insensitive.");
+        // ask for user input
+        System.out.print("Please enter the word you want to encrypt: ");
+        String word = sc.nextLine();
+        System.out.print("Please enter the public key k: ");
+        int pubKey = sc.nextInt();
+        System.out.print("Please enter the modulus n: ");
+        int mod = sc.nextInt();
+        sc.nextLine();
+
+        // Ensure public key and modulus makes sense
+
+        // ecrypt and return cipher text to user
+        Cipher encrypt = new Cipher(pubKey, mod, word.toUpperCase());
+        System.out.println("Here is your encrypted message: " + Arrays.toString(encrypt.encryptWord()));
 
     }
 
     private void decrypt(Scanner sc){
         System.out.println("DECRYPTION");
+        System.out.println("This console will decrypt an encoded single word message.");
+
+        // user input
+        System.out.print("Please enter your private key: ");
+        int privKey = sc.nextInt();
+        System.out.print("Please enter your modulus: ");
+        int mod = sc.nextInt();
+        sc.nextLine();
+        // insert private key and modulus validation?
+
+        System.out.println("Please enter the encoded message to decrypt (Format: 13, 24, 35, 43): ");
+        String codedMsg = sc.nextLine();
+
+        // transform coded message into an array of integers
+        String[] tempMsg = codedMsg.split(", ");
+        int[] cipherText = new int[tempMsg.length];
+        for(int i = 0; i < cipherText.length; i++){
+            cipherText[i] = Integer.parseInt(tempMsg[i]);
+        }
+
+        // actual decryption
+        Cipher decrypt = new Cipher(privKey, mod, cipherText);
+        System.out.println("This is your secret message: " + decrypt.decryptWord());
+
     }
 
 
@@ -97,6 +131,7 @@ public class Console {
         while(true) {
             consoleMenu();
             int choice = sc.nextInt();
+            sc.nextLine();
 
             if (choice == 1) {
                 //key gen
@@ -116,15 +151,16 @@ public class Console {
                 System.out.print("See you soon! :)");
                 break;
             }
+
+            // return to console menu
+            System.out.print("Press enter to go back to the console menu! ");
+            sc.nextLine();
         }
         sc.close();
     }
 
-
-
     public static void main(String[] args) {
         Console testing = new Console();
         testing.run();
-
     }
 }
