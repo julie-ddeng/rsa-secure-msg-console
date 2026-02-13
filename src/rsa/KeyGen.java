@@ -33,10 +33,11 @@ public class KeyGen {
     }
 
     // Public/private key generator functions
+
+    /** This function calculates and returns the greatest common divisor (GCD) of two integers a and b using
+     * Euclid's algorithm.
+     */
     private int gcd(int a, int b){
-        /** This function calculates and returns the greatest common divisor (GCD) of two integers a and b using
-         * Euclid's algorithm.
-         */
         int r = a % b;
         while(r != 0) {
             a = b;
@@ -46,10 +47,10 @@ public class KeyGen {
         return b;
     }
 
+    /** This function generates a public key k, such that the gcd( k, (p-1)*(q-1) ) = 1, where (p-1)*(q-1) is
+     * Euler's Totient.
+     */
     private int generatePublic(){
-        /** This function generates a public key k, such that the gcd( k, (p-1)*(q-1) ) = 1, where (p-1)*(q-1) is
-         * Euler's Totient.
-         */
         Random randomGen = new Random();
         int k;
         // loop will keep generating until it finds public key k relatively prime with eulers.
@@ -69,10 +70,10 @@ public class KeyGen {
         return k;
     }
 
+    /** This function finds and returns the multiplicative inverse of an integer k, modulus mod, using the extended
+     * Euclidean algorithm.
+     */
     private int inverse(int k, int mod){
-        /** This function finds and returns the multiplicative inverse of an integer k, modulus mod, using the extended
-         * Euclidean algorithm.
-         */
         int prevRemain = mod;
         int currRemain = k;
 
@@ -98,10 +99,10 @@ public class KeyGen {
         return inverse;
     }
 
+    /** This function generates a private key s such that it is the inverse of the public key k, where the modulus
+     * is Euler's Totient.
+     */
     private int generatePrivate(){
-        /** This function generates a private key s such that it is the inverse of the public key k, where the modulus
-         * is Euler's Totient.
-         */
         return inverse(this.publicKey, this.eulers);
     }
 }

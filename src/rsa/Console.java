@@ -9,10 +9,11 @@ public class Console {
     private int modulus;
 
     // helper methods
+
+    /**
+     * This method returns true if p1 and p2 are two distinct prime numbers greater than 5.
+     */
     private boolean primeInputValidation(int p1, int p2){
-        /**
-         * This method returns true if p1 and p2 are two distinct prime numbers greater than 5.
-         */
         if(p1 != p2 && p1 > 5 && p2 > 5){
             //check if both are prime
             return true;
@@ -164,3 +165,9 @@ public class Console {
         testing.run();
     }
 }
+// Possible future improvements
+    // Offer logging in/signing in with username and password, and store generated keys in a txt file
+
+// other screenshots on desktop
+
+// offer option for generating prime numbers
