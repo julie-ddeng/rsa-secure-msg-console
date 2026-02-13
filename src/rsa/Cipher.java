@@ -32,7 +32,7 @@ public class Cipher {
          * This method returns an array containing an encryption of each letter of the word to be encrypted.
          */
         // transforms each letter of the word into its number representation
-        int[] wordAsNum = wordToNum(this.word);
+        int[] wordAsNum = Utils.wordToNum(this.word);
         int[] encrypted = new int[wordAsNum.length];
         // Stores each encrypted letter into an array
         for(int i = 0; i < encrypted.length; i++){
@@ -41,26 +41,12 @@ public class Cipher {
         return encrypted;
     }
 
-    // Helper methods to encryptWord
-        // Unicode info for testing purposes: 'A' == 65, 'Z' == 90.
-
-    /**
-     * This method returns an array of the numbers corresponding to the order of the letters in the alphabet.
-     */
-    private int[] wordToNum(char[] word){
-        int[] result = new int[word.length];
-        for(int i = 0; i < result.length; i++){
-            result[i] = word[i] - 'A' + 1;
-        }
-        return result;
-    }
-
     /**
      * This method encrypts a number num representing a letter of the alphabet.
      * It will compute num*publicKey and take its remainder mod modulus.
      */
     private int encryptLetter(int num){
-        return modPow(num, this.publicKey, this.modulus);
+        return Utils.modPow(num, this.publicKey, this.modulus);
     }
 
     // Decrypt methods
@@ -83,28 +69,9 @@ public class Cipher {
      * This method returns the encrypted number as the letter it is supposed to represent.
      */
     private char decryptLetter(int num){
-        int decryptedNum = modPow(num, this.privateKey, this.modulus);
+        int decryptedNum = Utils.modPow(num, this.privateKey, this.modulus);
         char letter = (char) (decryptedNum -1 + 'A');
         return letter;
     }
 
-    // other helper method
-
-    /**
-     * This method implements repeated squaring trick to compute an exponent, modulo n.
-     * Consistently reduces the base (mod n) to avoid integers that are too large.
-     */
-    private int modPow(int base, int exponent, int modulus){
-        int result = 1;
-        base = base % modulus;
-        while (exponent > 0){
-            if(exponent % 2 == 1){
-                result = (result * base) % modulus;
-                exponent--;
-            }
-            exponent = exponent/2;
-            base = (base*base) % modulus;
-        }
-        return result;
-    }
 }

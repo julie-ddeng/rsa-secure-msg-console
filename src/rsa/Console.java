@@ -8,18 +8,6 @@ public class Console {
     private int privateKey;
     private int modulus;
 
-    // helper methods
-
-    /**
-     * This method returns true if p1 and p2 are two distinct prime numbers greater than 5.
-     */
-    private boolean primeInputValidation(int p1, int p2){
-        if(p1 != p2 && p1 > 5 && p2 > 5){
-            //check if both are prime
-            return true;
-        }
-        return false;
-    }
 
     // Console methods
 
@@ -54,7 +42,7 @@ public class Console {
         sc.nextLine();
 
         // asks for user input until primes are valid
-        while( ! primeInputValidation(p1, p2)){
+        while( ! Utils.primeInputValidation(p1, p2)){
             System.out.println("Invalid primes, try again!");
             System.out.print("First prime: ");
             p1 = sc.nextInt();
