@@ -67,37 +67,76 @@ public class Console {
     private void encrypt(Scanner sc){
         System.out.println("ENCRYPTION");
         System.out.println("This console will encrypt single word messages, case insensitive.");
+
         // ask for user input
         System.out.print("Please enter the word you want to encrypt: ");
         String word = sc.nextLine();
-        System.out.print("Please enter the public key k: ");
-        int pubKey = sc.nextInt();
-        System.out.print("Please enter the modulus n: ");
-        int mod = sc.nextInt();
-        sc.nextLine();
 
-        // Ensure public key and modulus makes sense
+        int pubKey;
+        int mod;
+        // if keys were generated, ask if user wants to use them and autofill
+        if(this.publicKey != 0){
+            System.out.println("Use generated public key k and modulus n? [y/n] ");
+            String answer = sc.nextLine();
+            if (answer.equals("y")){
+                pubKey = this.publicKey;
+                mod = this.modulus;
+                System.out.println("Your public key is " + pubKey);
+                System.out.println("Your modulus is "+ mod);
+            }
+            else{
+                System.out.print("Please enter the public key k: ");
+                pubKey = sc.nextInt();
+                System.out.print("Please enter the modulus n: ");
+                mod = sc.nextInt();
+                sc.nextLine();
+            }
+        }
+        else{
+            System.out.print("Please enter the public key k: ");
+            pubKey = sc.nextInt();
+            System.out.print("Please enter the modulus n: ");
+            mod = sc.nextInt();
+            sc.nextLine();
+        }
 
         // ecrypt and return cipher text to user
         Cipher encrypt = new Cipher(pubKey, mod, word.toUpperCase());
         System.out.println("Here is your encrypted message: " + Arrays.toString(encrypt.encryptWord()));
-
     }
 
     private void decrypt(Scanner sc){
         System.out.println("DECRYPTION");
         System.out.println("This console will decrypt an encoded single word message.");
 
-        // user input
-        System.out.print("Please enter your private key: ");
-        int privKey = sc.nextInt();
-        System.out.print("Please enter your modulus: ");
-        int mod = sc.nextInt();
-        sc.nextLine();
-        // insert private key and modulus validation?
-
         System.out.println("Please enter the encoded message to decrypt (Format: 13, 24, 35, 43): ");
         String codedMsg = sc.nextLine();
+
+        // if keys were generated, ask if user wants to use them and autofill
+        int privKey;
+        int mod;
+        if(this.privateKey != 0) {
+            System.out.println("Use generated private key s and modulus n? [y/n] ");
+            String answer = sc.nextLine();
+            if (answer.equals("y")) {
+                privKey = this.privateKey;
+                mod = this.modulus;
+                System.out.println("Your private key is " + privKey);
+                System.out.println("Your modulus is " + mod);
+            } else{
+                System.out.print("Please enter your private key: ");
+                privKey = sc.nextInt();
+                System.out.print("Please enter your modulus: ");
+                mod = sc.nextInt();
+                sc.nextLine();
+            }
+        } else{
+            System.out.print("Please enter your private key: ");
+            privKey = sc.nextInt();
+            System.out.print("Please enter your modulus: ");
+            mod = sc.nextInt();
+            sc.nextLine();
+        }
 
         // transform coded message into an array of integers
         String[] tempMsg = codedMsg.split(", ");
@@ -121,6 +160,11 @@ public class Console {
             consoleMenu();
             int choice = sc.nextInt();
             sc.nextLine();
+            while(choice != 1 && choice != 2 && choice != 3 && choice != 4){
+                System.out.print("Invalid option, please choose between 1-4: ");
+                choice = sc.nextInt();
+                sc.nextLine();
+            }
 
             if (choice == 1) {
                 //key gen
@@ -134,7 +178,7 @@ public class Console {
                 // decryption
                 decrypt(sc);
             }
-            else if(choice == 4){
+            else{
                 // exits console
                 System.out.println("Thank you for using this console!");
                 System.out.print("See you soon! :)");
@@ -153,9 +197,3 @@ public class Console {
         testing.run();
     }
 }
-// Possible future improvements
-    // Offer logging in/signing in with username and password, and store generated keys in a txt file
-
-// other screenshots on desktop
-
-// offer option for generating prime numbers
