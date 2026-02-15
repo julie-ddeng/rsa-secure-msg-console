@@ -14,3 +14,10 @@ This project displays a simple console and uses the RSA cryptosystem to allow us
 
 - This is a very basic implementation of the RSA cryptosystem and is in no way meant to be truly secure. 
   - Designed mostly for learning, experimenting, and curiosity :)
+
+### Future Improvements
+
+- Offer prime number generation
+- Replace int with BigInteger
+- Implement more robust user input validation
+- Add GUI interface
